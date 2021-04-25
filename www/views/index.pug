@@ -1,0 +1,12 @@
+doctype html
+html(lang="en")
+  head
+    title= pageTitle
+    script(type='text/javascript').
+      if (foo) bar(1 + 5)
+  body
+    h1 Kegerator
+    #container.col
+      ul
+        each entry in rows
+          li= `${entry.keg_id} : ${entry.weight_lbs} lbs`

@@ -1,7 +1,8 @@
 import express from 'express';
 import pg from 'pg'
+import pug from 'pug'
 
-
+// database connection
 const client = new pg.Client()
 await client.connect()
 
@@ -9,31 +10,10 @@ await client.connect()
 async function handleRender(req, res) {
   const result = await client.query('SELECT * from kegweights')
   await client.end()
-  res.send(renderFullPage(result.rows));
-}
 
-function renderFullPage(rows) {
-  return `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Kegerator</title>
-      </head>
-      <body>
-        <div id="root">
-          <div>
-            foo
-          </div>
-          <div>
-            bar
-          </div>
-          <div>
-            ${JSON.stringify(rows)}
-          </div>
-        </div>
-      </body>
-    </html>
-  `;
+  var html = pug.renderFile('./views/index.pug', {rows:result.rows});
+
+  res.send(html);
 }
 
 const app = express();
